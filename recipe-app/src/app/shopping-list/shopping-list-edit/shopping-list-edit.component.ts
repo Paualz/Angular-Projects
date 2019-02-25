@@ -9,23 +9,47 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./shopping-list-edit.component.css'],
 })
 export class ShoppingListEditComponent implements OnInit {
-  @ViewChild('IngNameInput') ingName: ElementRef;
-  @ViewChild('IngAmountInput') ingAmount: ElementRef;
+  ingredientToEdit: Ingredient;
+  editedIngredientId: number;
+  ingName: string;
+  ingAmount;
+  submittedForm = false;
+  editMode = false;
   @ViewChild('f') ingForm: NgForm; 
   constructor(private shopListService: shopListService) { }
 
   ngOnInit() {
+    this.shopListService.startedEditing
+    .subscribe(
+      (index: number)=>{
+        this.editMode = true;
+        this.editedIngredientId = index;
+        this.ingredientToEdit = this.shopListService.getIngredient(this.editedIngredientId);
+        this.ingForm.form.setValue({
+          name: this.ingredientToEdit.name,
+          amount: this.ingredientToEdit.amount
+        });
+
+      }
+    );
   }
 
-  onAddIngredients(){
-    let ingName = this.ingName.nativeElement.value;
-    let ingAmount = this.ingAmount.nativeElement.value;
-    let newIngredient = new Ingredient(ingName, ingAmount);
-    this.shopListService.addIngredient(newIngredient);
-  }
 
-  onSubmitform(){
-    console.log(this.ingForm);
+  onSubmitform(){    
+    this.ingName = this.ingForm.value.name;
+    this.ingAmount = +this.ingForm.value.amount;
+    let newIngredient = new Ingredient(this.ingName, this.ingAmount);
+    if(this.editMode){
+      console.log('works');
+      console.log(this.editedIngredientId);
+      console.log(newIngredient);
+      this.shopListService.editIngredient(this.editedIngredientId, newIngredient);
+    }else{
+      this.submittedForm = true;
+     
+      this.shopListService.addIngredient(newIngredient);
+    }
+
   }
   
   onAutoComplete(){
@@ -36,5 +60,15 @@ export class ShoppingListEditComponent implements OnInit {
       name: suggestedIng,
       amount: suggestedAmount
     });
+  }
+
+  onDeleteIng(){
+    this.shopListService.deleteIngredient(this.editedIngredientId);
+    this.onClearForm();
+  }
+
+  onClearForm(){
+    this.editMode = false;
+    this.ingForm.reset();
   }
 }

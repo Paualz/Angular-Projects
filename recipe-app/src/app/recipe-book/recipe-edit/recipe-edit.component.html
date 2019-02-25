@@ -1,3 +1,109 @@
-<p>
-  recipe-edit works!
-</p>
+<div class="container">
+    <div class="row">
+       <div class="col-12 col-md-12 col-lg-12">
+          <form [formGroup]="recipeForm" (ngSubmit)="onSubmitRecipe()">
+          <div class="row">
+             <div class="col-12 col-md-12 col-lg-12">
+                <button 
+                   type="submit" 
+                   class="btn btn-success"
+                   [disabled]="!recipeForm.valid">
+                   Add recipe
+                </button>
+                <button 
+                type="button" 
+                class="btn btn-danger"
+                (click)="onCancel()">
+                  Cancel
+                </button>
+                <span class="help-block"
+                   *ngIf="!recipeForm.valid && recipeForm.touched"
+                   >Please, make sure to enter valid data!
+                </span>
+             </div>
+          </div>
+          <div class="row">
+             <div class="col-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                   <label for="recipeName">Recipe Name:</label>
+                   <input type="text"
+                      formControlName="recipeName"
+                      id="recipeName"
+                      name="recipeName"
+                      class="form-control">
+                   <span class="help-block"
+                      *ngIf="!recipeForm.get('recipeName').valid && recipeForm.get('recipeName').touched" 
+                      >Please, insert a recipe!</span> <!--the get method gives us access to the form controls! -->
+                </div>
+                <div class="row">
+                   <div class="col-12 col-md-12 col-lg-12">
+                      <div class="form-group">
+                         <label for="imgPath">Image: </label>
+                         <input
+                            type="text"
+                            formControlName="recipeImg"
+                            id="imgPath"
+                            name="imgPath"
+                            class="form-control">
+                      </div>
+                   </div>
+                </div>
+                <div class="row">
+                   <div class="col-12 col-md-12 col-lg-12">
+                      <div class="form-group">
+                         <label for="recipeDesc">Description: </label>
+                         <textarea
+                            formControlName="recipeDesc"
+                            cols="5"
+                            rows="5"
+                            id="recipeDesc"
+                            name="recipeDesc"
+                            class="form-control"></textarea>
+                         <span class="help-block"
+                            *ngIf="!recipeForm.get('recipeDesc').valid && recipeForm.get('recipeDesc').touched" 
+                            >Please, insert a valid description!</span> 
+                      </div>
+                   </div>
+                </div>
+                <div class="row">
+                   <div class="col-12 col-md-12 col-lg-12" formArrayName="recipeIng">
+                      <div class="row"
+                      *ngFor="let ingredient of recipeForm.get('recipeIng').controls; let i = index"
+                      [formGroupName] = "i"> 
+                      <!--Gives access to all the controls,by looping them.-->                   
+                      <div class="col-8 col-md-8 col-lg-8">
+                         <input type="text"
+                            name="ingredientName"
+                            formControlName="name"
+                            class="form-control">
+                      </div>
+                      <div class="col-2 col-md-2 col-lg-2" >
+                         <input type="number"
+                            name="ingredientAmount"
+                            formControlName="amount"
+                            class="form-control">
+                      </div>
+                      <div class="col-2 col-md-2 col-lg-2">
+                         <button type="button"
+                            class="btn btn-danger"
+                            (click)="onDeleteIngredient(i)"> X </button>
+                      </div>
+                   </div>
+                   <div class="row">
+                      <div class="col-12 col-md-12 col-lg-12">
+                         <button class="btn btn-success"
+                            type="button"
+                            (click)="onAddIngredient()">Add a new Ingredient</button>
+                      </div>
+                   </div>
+                </div>
+                <hr>
+             </div>
+          </div>
+       </div>
+       </form>
+    </div>
+ </div>
+ </div>
+ 
+ 
