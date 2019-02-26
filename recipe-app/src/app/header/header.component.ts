@@ -1,4 +1,6 @@
 import { Component, OnInit} from '@angular/core';
+import { recipeService } from '../recipe-book/recipe.service';
+import { recipeServerService } from '../shared/recipeServer.service';
 
 @Component({
   selector: 'app-header',
@@ -7,10 +9,25 @@ import { Component, OnInit} from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   
-  constructor() { }   
+  constructor(private recipeServerService: recipeServerService,
+              private recipeService: recipeService) { }   
 
   ngOnInit() {
   }
 
+  onSaveData(){
+    this.recipeServerService.storeRecipes()
+    .subscribe(
+      (response)=>{
+        let data = response;
+        console.log(data);
+      },
+      (error) => console.log(error)
+    );
+  }
 
+  onFetchData(){
+    this.recipeServerService.getRecipes();
+    //The subscription is made in the servers service.
+  }
 }
