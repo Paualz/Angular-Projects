@@ -10,16 +10,27 @@
         <li routerLinkActive="active"><a routerLink="/home-recipes">Recipes</a></li>
         <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping list</a></li>
       </ul>
+    <ng-template [ngIf]="auth.isAuthenticated()">
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" appDropdown>
           <a href="#" class="dropwdown-toggle" role="button" style="cursor:pointer">Manage data</a> <!-- This is the "entrance to the 
             dropdown" -->
-          <ul class="dropdown-menu">
-            <li><a style="cursor:pointer" (click)="onSaveData()">Save data</a></li>
-            <li><a style="cursor:pointer" (click)="onFetchData()">Fetch data</a></li>
-          </ul>
+            <ul class="dropdown-menu">
+              <li><a style="cursor:pointer" (click)="onSaveData()">Save data</a></li>
+              <li><a style="cursor:pointer" (click)="onFetchData()">Fetch data</a></li>
+            </ul>
         </li>
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <li routerLinkActive="active" (click) = "onLoggingOut()"><a style="cursor:pointer">Log Out</a></li>
+    </ul>
+    </ng-template>
+      <ul class="nav navbar-nav navbar-right">
+        <ng-template [ngIf]="!auth.isAuthenticated()">
+          <li routerLinkActive="active"><a routerLink="/sign-in">Sign In</a></li>
+          <li routerLinkActive="active"><a routerLink="/sign-up">Sign Up</a></li>
+        </ng-template>
+        </ul>
     </div>
   </div>
 </nav>

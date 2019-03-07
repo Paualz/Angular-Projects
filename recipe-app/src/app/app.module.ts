@@ -18,6 +18,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { recipeService } from './recipe-book/recipe.service';
 import { HttpClientModule } from '@angular/common/http';
 import { recipeServerService } from './shared/recipeServer.service';
+import { SignInComponent } from './authentication/sign-in/sign-in.component';
+import { SignUpComponent } from './authentication/sign-up/sign-up.component';
+import { authService } from './authentication/authentication.service';
+import { authGuard } from './authentication/auth-guard.service';
 
 
 @NgModule({
@@ -32,7 +36,9 @@ import { recipeServerService } from './shared/recipeServer.service';
     RecipeDetailComponent,
     dropwDownDirective,
     NoRecipeSelectedComponent,
-    RecipeEditComponent
+    RecipeEditComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +49,9 @@ import { recipeServerService } from './shared/recipeServer.service';
     ],
   providers: [shopListService,
               recipeService,
-            recipeServerService],
+              recipeServerService,
+              authService,
+              authGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
